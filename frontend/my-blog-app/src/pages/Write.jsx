@@ -1,19 +1,24 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import { useState } from "react";
 import ReactQuill from "react-quill";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/AuthContext";
 import DOMPurify from "dompurify"; // Filter dangerous html content
+import Compressor from "compressorjs";
 
 const Write = () => {
   const state = useLocation().state; // Indicate in update or writing new post
-  const [value, setValue] = useState(state?.desc || ""); // Use original data in update mode
+  // Use original data in update mode
+  const [value, setValue] = useState(
+    state?.desc || "Write something...Max 3000 characters"
+  );
   const [title, setTitle] = useState(state?.title || "");
   const [cat, setCat] = useState(state?.cat || "");
-  const [file, setFile] = useState(state?.img || null);
+  const [file, setFile] = useState(state?.img || "");
+  const [uploaded, setUploaded] = useState(false);
+
   const navigate = useNavigate();
   const { currentUser } = useContext(AuthContext);
 
@@ -23,18 +28,37 @@ const Write = () => {
   }
 
   const upload = async () => {
-    try {
-      const formData = new FormData();
-      if (!formData) {
-        return state?.img || null;
-      }
-      formData.append("file", file);
-      const res = await axios.post("/upload", formData);
-      return res.data; // Return img URL
-    } catch (error) {
-      console.log(error);
-    }
+    return new Promise((resolve, reject) => {
+      new Compressor(file, {
+        // Compressor options
+        quality: 0.6,
+        maxWidth: 1024,
+        ConvertSize: 200000, // Convert to JPG when input file > 200 kB
+        success(result) {
+          const formData = new FormData();
+          formData.append("file", result, result.name);
+          // Send the compressed image file to server with axios
+          axios
+            .post("/upload", formData)
+            .then((res) => {
+              setUploaded(true);
+              resolve(res.data);
+            })
+            .catch(reject);
+        },
+        error(err) {
+          console.error(err);
+          reject(err);
+        },
+      });
+    });
   };
+
+  // const handleUpload = async (e) => {
+  //   e.preventDefault();
+  //   setFile(e.target.files[0]);
+  //   setFile(typeof file === "string" ? file : await upload());
+  // };
 
   const handleChange = (value) => {
     const sanitizedValue = DOMPurify.sanitize(value);
@@ -43,7 +67,7 @@ const Write = () => {
 
   const handlePublish = async (e) => {
     e.preventDefault();
-    const imgURL = await upload();
+    const imgURL = typeof file === "string" ? file : await upload();
 
     try {
       state
@@ -52,44 +76,61 @@ const Write = () => {
             title,
             desc: value,
             cat,
-            img: file ? imgURL : state?.img || "",
+            img: imgURL,
           })
         : await axios.post(`/posts/`, {
             // New post to addPost controller
             title,
             desc: value,
             cat,
-            img: file ? imgURL : "",
+            img: imgURL,
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
       alert("Published successful");
       return navigate("/");
     } catch (error) {
       console.log(error);
+      if (error.response && error.response.data.code === "ER_DATA_TOO_LONG") {
+        return alert("You wrote too much or used too many formats");
+      }
       alert(error);
     }
   };
 
+  // Disable URL
+  const myToolbar = [
+    [{ header: [1, 2, 3, false] }],
+    ["bold", "italic", "underline", "strike"],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ color: [] }, { background: [] }],
+    ["clean"],
+  ];
+
   return (
-    <div className="editPost">
+    <div className="edit">
       <div className="content">
         <input
           type="text"
           value={title}
-          placeholder="Title max 80 characters"
-          maxLength="80"
+          placeholder="Title max 60 characters"
+          maxLength="60"
           onChange={(e) => setTitle(e.target.value)}
         />
-        <div className="editorContainer">
-          <ReactQuill theme="snow" value={value} onChange={handleChange} />
+        <div className="ql-container">
+          <ReactQuill
+            className="ql-editor"
+            theme="snow"
+            value={value}
+            onChange={handleChange}
+            modules={{
+              toolbar: myToolbar,
+            }}
+          />
         </div>
       </div>
       <div className="menu">
         <div className="item">
           <h1>Publish</h1>
-          <span>
-            <b>Status: </b> Draft
-          </span>
           <span>{/*Future feature: <b>Visibility: </b> Public*/}</span>
           <input
             style={{ display: "none" }}
@@ -101,8 +142,13 @@ const Write = () => {
           <label className="file" htmlFor="file">
             Upload an image
           </label>
+          {
+            <span>
+              <b>Upload status: {uploaded && "Successful"}</b>
+            </span>
+          }
           <div className="buttons">
-            <button>Save as a draft</button>
+            {/* <button>Save as a draft</button>*/}
             <button onClick={handlePublish}>Publish</button>
           </div>
         </div>

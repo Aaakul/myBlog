@@ -52,28 +52,28 @@ const Single = () => {
   }
 
   return (
-    <div className="Single">
-      <div className="Content">
+    <div className="single">
+      <div className="content">
         <img src={post.img ? `../uploads/${post.img}` : Logo} alt="" />
-        <div className="Profile">
+        <div className="info">
           <img src={Logo} alt="User profile" />
-        </div>
-        <div className="Info">
-          <span>{post.username}</span>
-          <p>Posted {moment(post.date).fromNow()}</p>
-        </div>
-        {currentUser.username === post.username && (
-          <div className="Edit">
-            <Link to={`/Write?Edit=${postId}`} state={post}>
-              <img src={Edit} alt="Edit" />
-            </Link>
-            <img src={Delete} alt="Delete" onClick={handleDelete} />
+          <div className="author">
+            <h2>{post.username}</h2>
+            <i>Posted {moment(post.date).fromNow()}</i>
           </div>
-        )}
+          {currentUser.username === post.username && (
+            <div className="edit">
+              <Link to={`/Write?Edit=${postId}`} state={post}>
+                <img src={Edit} alt="Edit" />
+              </Link>
+              <img src={Delete} alt="Delete" onClick={handleDelete} />
+            </div>
+          )}
+        </div>
         <h1>{post.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: post.desc }} />
+        <div dangerouslySetInnerHTML={{ __html: post.desc }} className="main-text"/>
       </div>
-      <Menu cat={post.cat} />
+      <Menu cat={post.cat} id={parseInt(postId)} />
     </div>
   );
 };

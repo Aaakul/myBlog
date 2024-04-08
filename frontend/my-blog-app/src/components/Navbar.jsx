@@ -7,14 +7,14 @@ const Navbar = ()  =>{
   const { currentUser, logout } = useContext(AuthContext);
 
   return (
-    <div className="Navbar">
-      <div className="Container">
-        <div className="Logo">
+    <div className="navbar">
+      <div className="container">
+        <div className="logo">
           <Link to="/">
           <img src={Logo} alt="Home" />
           </Link>
         </div>
-        <div className="Links">
+        <div className="links">
           <Link className="link" to="/?cat=art">
             <h6>Art</h6>
           </Link>

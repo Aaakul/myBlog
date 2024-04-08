@@ -30,8 +30,8 @@ const Layout = () => {
 
 function App() {
   return (
-  <div className="App">
-    <div className="Container">
+  <div className="app">
+    <div className="container">
       <Router>
           <Routes>
               <Route path="/" element={<Layout/>} >

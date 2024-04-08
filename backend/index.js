@@ -12,7 +12,9 @@ const storage = multer.diskStorage({
     cb(null, "../frontend/my-blog-app/public/uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + file.originalname);
+    const name = file.originalname.split(".");
+    const extension = name[name.length - 1];
+    cb(null, Date.now() + "." + extension);
   },
 });
 
@@ -23,7 +25,7 @@ app.post("/backend/upload", upload.single("file"), function (req, res) {
   const file = req.file;
   return !file
     ? res.status(200) // No file uploaded
-    : res.status(201).json(file.filename);
+    : res.status(200).json(file.filename);
 });
 
 app.use(express.json());

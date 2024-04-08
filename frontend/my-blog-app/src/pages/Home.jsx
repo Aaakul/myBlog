@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Logo from "../img/logo.png";
 import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
+import { getText } from "../helpers/getText";
 
 const Home = () => {
   // const testPosts = [
@@ -51,11 +52,6 @@ const Home = () => {
     fetchData();
   }, [cat]);
 
-  // Html to pure text
-  const getText = (html) => {
-    const doc = new DOMParser().parseFromString(html, "text/html");
-    return doc.body.textContent;
-  };
 
 
   // if (notFound) {
@@ -63,21 +59,21 @@ const Home = () => {
   // }
 
   return (
-    <div className="Home">
-      <div className="Posts">
+    <div className="home">
+      <div className="posts">
         {posts &&
           posts.map((post) => (
             <div className="post" key={post.id}>
-              <div className="thumb">
-                <img src={post.img ? `uploads/${post.img}` : Logo} alt="" />
-              </div>
+              <Link to={`/post/${post.id}`}>
+                <div className="thumb">
+                  <img src={post.img ? `uploads/${post.img}` : Logo} alt="" />
+                </div>
+              </Link>
               <div className="content">
                 <Link to={`/post/${post.id}`}>
-                  <div className="title">
-                    <h1>{post.title}</h1>
-                  </div>
+                  <h1>{post.title}</h1>
                 </Link>
-                <p>{getText(post.desc)}</p>
+                <p>{getText(post.desc, 300)}</p>
               </div>
             </div>
           ))}

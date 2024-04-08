@@ -36,7 +36,7 @@ const Reg = () => {
   };
 
   return (
-    <div className="Auth">
+    <div className="auth">
       <h1>Start your blog today</h1>
       <form>
         <input
