@@ -16,7 +16,7 @@ const Write = () => {
   );
   const [title, setTitle] = useState(state?.title || "");
   const [cat, setCat] = useState(state?.cat || "");
-  const [file, setFile] = useState(state?.img || "");
+  const [url, setUrl] = useState(state?.img || "");
   const [uploaded, setUploaded] = useState(false);
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ const Write = () => {
     return <Navigate to="/login" replace={true} />;
   }
 
-  const upload = async () => {
+  const upload = async (file) => {
     return new Promise((resolve, reject) => {
       new Compressor(file, {
         // Compressor options
@@ -42,7 +42,8 @@ const Write = () => {
             .post("/upload", formData)
             .then((res) => {
               setUploaded(true);
-              resolve(res.data);
+              setUrl(res.data);
+              resolve();
             })
             .catch(reject);
         },
@@ -54,12 +55,6 @@ const Write = () => {
     });
   };
 
-  // const handleUpload = async (e) => {
-  //   e.preventDefault();
-  //   setFile(e.target.files[0]);
-  //   setFile(typeof file === "string" ? file : await upload());
-  // };
-
   const handleChange = (value) => {
     const sanitizedValue = DOMPurify.sanitize(value);
     setValue(sanitizedValue);
@@ -67,7 +62,6 @@ const Write = () => {
 
   const handlePublish = async (e) => {
     e.preventDefault();
-    const imgURL = typeof file === "string" ? file : await upload();
 
     try {
       state
@@ -76,14 +70,14 @@ const Write = () => {
             title,
             desc: value,
             cat,
-            img: imgURL,
+            img: url,
           })
         : await axios.post(`/posts/`, {
             // New post to addPost controller
             title,
             desc: value,
             cat,
-            img: imgURL,
+            img: url,
             date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           });
       alert("Published successful");
@@ -137,7 +131,12 @@ const Write = () => {
             type="file"
             id="file"
             name=""
-            onChange={(e) => setFile(e.target.files[0])}
+            onChange={(e) => {
+              upload(e.target.files[0]).catch((err) => {
+                alert("Image upload failed");
+                console.log(err);
+              });
+            }}
           />
           <label className="file" htmlFor="file">
             Upload an image
@@ -148,7 +147,7 @@ const Write = () => {
             </span>
           }
           <div className="buttons">
-            {/* <button>Save as a draft</button>*/}
+            {/*Future feature: <button>Save as a draft</button>*/}
             <button onClick={handlePublish}>Publish</button>
           </div>
         </div>
