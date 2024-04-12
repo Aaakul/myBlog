@@ -57,10 +57,9 @@ const Write = () => {
   };
 
   const handleChange = (value) => {
-    const sanitizedValue = DOMPurify.sanitize(value); // Filter dangerous html context
-    const removeEmoji = sanitizedValue.replace(emojiRegex(), "No emojis"); // Filter emojis
-    setValue(removeEmoji);
-    console.log(removeEmoji);
+    const removeEmoji = value.replace(emojiRegex(), "No emojis"); // Filter emojis
+    const sanitizedValue = DOMPurify.sanitize(removeEmoji); // Filter dangerous html context
+    setValue(sanitizedValue);
   };
 
   const handlePublish = async (e) => {
