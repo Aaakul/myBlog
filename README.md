@@ -1,15 +1,16 @@
 # my-blog-app
-#####A  full-stack demo project made with React.js, Node.js, Express, and MySQL
-#####This project based on Lama Dev's blog app tutorial and its code https://www.youtube.com/watch?v=0aPLk2e2Z3g https://github.com/safak/youtube2022/tree/blog-app
-#####Heartfelt thanks to Lama for providing the wonderful tutorial and open-sourcing the whole project.
+##### A  full-stack demo project made with React.js, Node.js, Express, and MySQL
+##### This project based on Lama Dev's blog app tutorial and its code https://www.youtube.com/watch?v=0aPLk2e2Z3g https://github.com/safak/youtube2022/tree/blog-app
+##### Heartfelt thanks to Lama for providing the wonderful tutorial and open-sourcing the whole project.
 # 
 ### New features and improvements from the original:
 - Input form empty check
 - Simple 404 page
-- HTML rich text display
+- HTML rich text display *(with DomPurify)
 - Image compress and upload indicator
 # 
-
+#### 2024/4/12
+Fix few bugs: Emoji problems, set publish date, cookies expire
 #### 2024/4/9
 New features: image compress and rich text display
 #### 2024/4/8
@@ -31,7 +32,7 @@ Finished the base project following the tutorial. Some bugs were fixed and few f
 ##### Improvement: 
 - 404 pages
 - Mobile devices optimizing
--  Clean code
+- Clean code
 
 #### Known Bugs
 ~~- Image upload：
@@ -39,3 +40,6 @@ Finished the base project following the tutorial. Some bugs were fixed and few f
 	Original img would be set to null~~
 ~~- Recommend menu:
 	Recommends current reading post~~
+~~- User auth invalid after closing window~~
+~~- Emojis lead SQL error~~ filter emojis with emoji-regex
+~~- Publish date won't change after editing~~

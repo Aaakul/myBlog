@@ -103,8 +103,8 @@ export const updatePost = (req, res) => {
 
     const postId = req.params.id;
     const q =
-      "UPDATE posts SET `title` = ?, `desc` = ?, `img` = ?, `cat` = ? WHERE `id` = ? AND `uid` = ?;";
-    const values = [req.body.title, req.body.desc, req.body.img, req.body.cat];
+      "UPDATE posts SET `title` = ?, `desc` = ?, `img` = ?, `cat` = ?, `date` = ? WHERE `id` = ? AND `uid` = ?;";
+    const values = [req.body.title, req.body.desc, req.body.img, req.body.cat, req.body.date];
     db.query(q, [...values, postId, userInfo.id], (err) => {
       return err
         ? res.status(500).json(err)

@@ -5,33 +5,6 @@ import axios from "axios";
 import { getText } from "../helpers/getText";
 
 const Home = () => {
-  // const testPosts = [
-  //     {
-  //         id: 0,
-  //         title: 'This is the title of test post 1, about 50 characters.',
-  //         desc: 'This is the description of test post 1: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi,laudantium incidunt repellendus aperiam omnis?',
-  //         img: {Logo},
-  //         uid: 1,
-  //         cat: "art",
-  //     },
-  //     {
-  //         id: 1,
-  //         title: 'This is the title of test post 2, about 50 characters.',
-  //         desc: 'This is the description of test post 2: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi,laudantium incidunt repellendus aperiam omnis?',
-  //         img: {Logo},
-  //         uid: 1,
-  //         cat: "life",
-  //     },
-  //     {
-  //         id: 2,
-  //         title: 'This is the title of test post 3, about 50 characters.',
-  //         desc: 'This is the description of post 3: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi,laudantium incidunt repellendus aperiam omnis?',
-  //         img: {Logo},
-  //         uid: 1,
-  //         cat: "technology",
-  //     }
-  // ];
-
   const [posts, setPosts] = useState([]);
   const cat = useLocation().search;
   //const [notFound, setNotFound] = useState(false);
@@ -51,8 +24,6 @@ const Home = () => {
     };
     fetchData();
   }, [cat]);
-
-
 
   // if (notFound) {
   //   return <p>No post found</p>

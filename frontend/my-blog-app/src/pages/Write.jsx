@@ -5,8 +5,9 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 import { AuthContext } from "../context/AuthContext";
-import DOMPurify from "dompurify"; // Filter dangerous html content
+import DOMPurify from "dompurify"; // Filter html content
 import Compressor from "compressorjs";
+import emojiRegex from "emoji-regex";
 
 const Write = () => {
   const state = useLocation().state; // Indicate in update or writing new post
@@ -33,7 +34,7 @@ const Write = () => {
         // Compressor options
         quality: 0.6,
         maxWidth: 1024,
-        ConvertSize: 200000, // Convert to JPG when input file > 200 kB
+        ConvertSize: 200 * 1000, // Convert to JPG when input file > 200 kB
         success(result) {
           const formData = new FormData();
           formData.append("file", result, result.name);
@@ -56,8 +57,10 @@ const Write = () => {
   };
 
   const handleChange = (value) => {
-    const sanitizedValue = DOMPurify.sanitize(value);
-    setValue(sanitizedValue);
+    const sanitizedValue = DOMPurify.sanitize(value); // Filter dangerous html context
+    const removeEmoji = sanitizedValue.replace(emojiRegex(), "No emojis"); // Filter emojis
+    setValue(removeEmoji);
+    console.log(removeEmoji);
   };
 
   const handlePublish = async (e) => {
@@ -71,6 +74,7 @@ const Write = () => {
             desc: value,
             cat,
             img: url,
+            date: moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           })
         : await axios.post(`/posts/`, {
             // New post to addPost controller

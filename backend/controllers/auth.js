@@ -8,7 +8,7 @@ export const reg = (req, res) => {
     db.query(q, [req.body.email, req.body.username], (err, data) => {
         if (err) return res.json(err);                                         
         if (!data.length) {
-            //Hash the password & creat new user  
+            //Hash the password & create new user  
             const salt = bcrypt.genSaltSync(10);
             const hash = bcrypt.hashSync(req.body.password, salt);
             const qInsert = "INSERT INTO users(`username`, `email`, `password`) VALUES (?)";
@@ -22,7 +22,7 @@ export const reg = (req, res) => {
                 return (err) ? res.status(500).json(err) : res.status(200).json("User has been created");
                 });
             } else {
-                return res.status(409).json("User already exisits");
+                return res.status(409).json("User already exists");
             }
     });
 }   
@@ -46,7 +46,7 @@ export const login = (req, res) => {
         const token = jwt.sign({id: data[0].id}, "your_key");     
         const {password, ...other} = data[0];    
             res.
-            cookie("access_token", token, {httpOnly: true, })
+            cookie("access_token", token, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true, }) // Expire in 30 days
             .status(200).json(other);    
     });        
 }

@@ -18,7 +18,12 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({
+  limits: {
+    fileSize: 1 * 1000 * 1000, // Max 1 Mb
+  },
+  storage: storage,
+});
 
 // Handle imgs from users
 app.post("/backend/upload", upload.single("file"), function (req, res) {
