@@ -28,70 +28,106 @@ $main-color: lightcyan !important;
   justify-content: center;
   width: 1024px;
   margin: auto auto;
-
+  // React Link
+  a {
+    text-decoration: none;
+    color: #000;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
   .container {
     width: 1024px;
     // Navigate Bar
     .navbar {
-      .link {
-        text-decoration: none;
-        color: black;
-      }
       .container {
         margin: auto;
         background-color: #{$main-color};
-        padding: 0.5rem 0;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
-        justify-content: space-between;
+        //justify-content: space-between;
 
         .logo {
+          justify-content: left;
+          margin: 16px auto auto 16px;
           img {
             width: 8rem;
-            margin: 1rem 3rem 1rem 2rem;
           }
         }
 
-        // Category links
         .links {
-          margin: auto;
+          margin: 0;
           display: flex;
           align-items: center;
-          gap: 0.6rem;
-
+          justify-self: flex-end;
+          gap: 24px;
+          // Catagories
           h6 {
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: bold;
           }
-
-          // Username and login/out
+          // Username
+          .name {
+            font-weight: bold;
+          }
+          // Login/out
           span {
             cursor: pointer;
+            &:hover {
+              text-decoration: underline;
+            }
           }
-
+        }
+        // New blog
+        .write {
+          justify-content: right;
+          margin-left: auto;
+          margin-right: 16px;
+          font-size: 1rem;
+          font-weight: bold;
+          width: 4rem;
+          height: 4rem;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: lightblue;
+          border-radius: 50%;
           &:hover {
-            text-decoration: underline;
+            background-color: lightgray;
           }
-          // New blog
-          .write {
-            margin-right: 1rem;
-            font-size: 1rem;
-            font-weight: bold;
-            width: 4rem;
-            height: 4rem;
+        }
+
+        .search-bar-container {
+          display: flex;
+          margin: auto;
+          margin-top: -10px;
+          margin-bottom: 10px;
+          max-width: fit-content;
+          font-size: 1rem;
+
+          .search-bar {
             display: flex;
             align-items: center;
-            justify-content: center;
-            background-color: lightblue;
-            border-radius: 50%;
-            &:hover {
-              background-color: lightgray;
-            }
+            gap: 10px;
+          }
+          label {
+            cursor: pointer;
+            margin: 2px;
+          }
+          // Search button
+          button {
+            cursor: pointer;
+            border-radius: 4px;
+            color: white;
+            background-color: teal;
+            border: 1px solid teal;
+            padding: 4px 10px;
           }
         }
       }
     }
-    //Home page
+    // Posts lists
     .home {
       .posts {
         margin-top: 2rem;
@@ -103,9 +139,7 @@ $main-color: lightcyan !important;
         .post {
           display: flex;
           gap: 2rem;
-          padding-top: 2rem;
-          padding-bottom: 2rem;
-
+          margin: 1rem;
           // Reverse odd number contents' direction
           &:nth-child(2n + 1) {
             flex-direction: row-reverse;
@@ -126,7 +160,7 @@ $main-color: lightcyan !important;
               position: absolute;
               z-index: -1;
               top: 1rem;
-              bottom: -1rem; 
+              bottom: -1rem;
               left: 1rem;
               right: -1rem;
               display: flex;
@@ -136,15 +170,13 @@ $main-color: lightcyan !important;
           }
 
           .content {
-            flex: 3;
+            flex: auto;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             h1 {
               font-size: 2rem;
-              color: black;
             }
-
             p {
               font-size: 1rem;
             }
@@ -169,17 +201,17 @@ $main-color: lightcyan !important;
           height: 300px;
           object-fit: scale-down;
         }
-
+        .profile {
+          width: auto;
+          height: 80px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
         .info {
           display: flex;
           justify-content: space-between;
           position: relative;
-          img {
-            width: auto;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-          }
+
           .author {
             position: absolute;
             top: 50%;
@@ -304,15 +336,6 @@ $main-color: lightcyan !important;
           .buttons {
             display: flex;
             justify-content: center;
-
-            // :first-child {
-            //   // Save button
-            //   cursor: pointer;
-            //   color: teal;
-            //   background-color: white;
-            //   border: 1px solid teal;
-            //   padding: 4px 5px;
-            // }
 
             :last-child {
               // Publish button

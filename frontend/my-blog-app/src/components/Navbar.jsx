@@ -2,8 +2,9 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import Logo from "../img/logo.png";
+import SearchBar from "./SearchBar";
 
-const Navbar = ()  =>{
+const Navbar = () => {
   const { currentUser, logout } = useContext(AuthContext);
 
   return (
@@ -11,7 +12,7 @@ const Navbar = ()  =>{
       <div className="container">
         <div className="logo">
           <Link to="/">
-          <img src={Logo} alt="Home" />
+            <img src={Logo} alt="Home" />
           </Link>
         </div>
         <div className="links">
@@ -33,14 +34,33 @@ const Navbar = ()  =>{
           <Link className="link" to="/?cat=food">
             <h6>Food</h6>
           </Link>
-          <span>{currentUser?.username }</span>
-          {currentUser ? 
-            (<span onClick={logout}>Logout</span>) :
-            (<><Link className="link" to="/Login">Login</Link>
-            <Link className="link" to="/Reg">Register</Link></>)}         
-          <div className="write">
-          <Link className="link" to="/Write">New<br/>Blog</Link>
-          </div>
+          {currentUser ? (
+            <>
+              <Link to={`/?author=${currentUser.username}`}>
+                <span className="name">{currentUser.username}</span>
+              </Link>
+              <span onClick={logout}>Logout</span>
+            </>
+          ) : (
+            <>
+              <Link to="/Login">
+                <span>Login</span>
+              </Link>
+              <Link to="/Reg">
+                <span>Register</span>
+              </Link>
+            </>
+          )}
+        </div>
+        <div className="write">
+          <Link to="/Write">
+            New
+            <br />
+            Blog
+          </Link>
+        </div>
+        <div className="search-bar-container">
+          <SearchBar />
         </div>
       </div>
     </div>

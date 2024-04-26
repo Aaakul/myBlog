@@ -88,11 +88,17 @@ const Reg = () => {
           Register
         </button>
         <span>
-          Just browsing? <Link to="/">Back to home</Link>
+          Just browsing?{" "}
+          <Link to="/">
+            <u>Back to home</u>
+          </Link>
         </span>
         {err && <p>{err}</p>}
         <span>
-          Already have an account? <Link to="/Login">Login</Link>
+          Already have an account?{" "}
+          <Link to="/Login">
+            <u>Login</u>
+          </Link>
         </span>
       </form>
     </div>

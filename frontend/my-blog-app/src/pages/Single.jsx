@@ -56,9 +56,11 @@ const Single = () => {
       <div className="content">
         <img src={post.img ? `../uploads/${post.img}` : Logo} alt="" />
         <div className="info">
-          <img src={Logo} alt="User profile" />
+          <img src={Logo} alt="User profile" className="profile" />
           <div className="author">
-            <h2>{post.username}</h2>
+            <Link to={`/?author=${post.username}`}>
+              <h2>{post.username}</h2>
+            </Link>
             <i>Posted {moment(post.date).fromNow()}</i>
           </div>
           {currentUser.username === post.username && (
@@ -71,7 +73,10 @@ const Single = () => {
           )}
         </div>
         <h1>{post.title}</h1>
-        <div dangerouslySetInnerHTML={{ __html: post.desc }} className="main-text"/>
+        <div
+          dangerouslySetInnerHTML={{ __html: post.desc }}
+          className="main-text"
+        />
       </div>
       <Menu cat={post.cat} id={parseInt(postId)} />
     </div>

@@ -58,14 +58,22 @@ const Login = () => {
         </button>
         {err && <p>{err}</p>}
         <span>
-          Just browsing? <Link to="/">Back to home</Link>
+          Just browsing?{" "}
+          <Link to="/">
+            <u>Back to home</u>
+          </Link>
         </span>
         <span>
-          New user? <Link to="/Reg">Register</Link>
+          New user?{" "}
+          <Link to="/Reg">
+            <u>Register</u>
+          </Link>
         </span>
         <span>
           Forgot your username or password?{" "}
-          <Link to="/LoginTrouble">Click here</Link>
+          <Link to="/LoginTrouble">
+            <u>Click here</u>
+          </Link>
         </span>
       </form>
     </div>

@@ -3,17 +3,21 @@ import jwt from "jsonwebtoken";
 
 // Home page
 export const getPosts = (req, res) => {
-  const q = req.query.cat
-    ? "SELECT * FROM posts WHERE cat = ?;"
-    : "SELECT * FROM posts;";
+  const search = req.query;
+  const field = search.field;
+  const keyword = search.keyword;
 
-  db.query(q, [req.query.cat], (err, data) => {
+  const q = field
+    ? `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\` FROM users u JOIN posts p ON u.id = p.uid WHERE ${field} LIKE '%${keyword}%';`
+    : "SELECT `title`, `desc`, p.img, p.id, `username` FROM users u JOIN posts p ON u.id = p.uid;";
+  
+    db.query(q, [field], (err, data) => {
     if (err) {
       return res.status(500).json(err);
     }
 
     if (!data.length) {
-      return res.json([]);
+      return res.status(404).json("");
     }
 
     return res.status(200).json(data);
@@ -31,7 +35,7 @@ export const getPost = (req, res) => {
     }
 
     if (!data.length) {
-      return res.status(404).json(null);
+      return res.status(404).json("");
     }
 
     return res.status(200).json(data[0]);
@@ -104,7 +108,13 @@ export const updatePost = (req, res) => {
     const postId = req.params.id;
     const q =
       "UPDATE posts SET `title` = ?, `desc` = ?, `img` = ?, `cat` = ?, `date` = ? WHERE `id` = ? AND `uid` = ?;";
-    const values = [req.body.title, req.body.desc, req.body.img, req.body.cat, req.body.date];
+    const values = [
+      req.body.title,
+      req.body.desc,
+      req.body.img,
+      req.body.cat,
+      req.body.date,
+    ];
     db.query(q, [...values, postId, userInfo.id], (err) => {
       return err
         ? res.status(500).json(err)
