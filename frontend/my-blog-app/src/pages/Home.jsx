@@ -29,7 +29,7 @@ const Home = () => {
   }, [search]);
 
   // Check search word
-  if (field && !["cat", "username", "title"].includes(field)) {
+  if (field && !["cat", "username", "title", "author"].includes(field)) {
     return <Navigate to="/NotFound" replace={true} />;
   }
 
@@ -51,7 +51,7 @@ const Home = () => {
                 <Link to={`/post/${post.id}`}>
                   <h1>{post.title}</h1>
                 </Link>
-                <Link to={`/?author=${post.username}`}>
+                <Link to={`/?username=${post.username}`}>
                   <span className="author">{`Author: ${post.username}`}</span>
                 </Link>
                 <p>{getText(post.desc, 300)}</p>

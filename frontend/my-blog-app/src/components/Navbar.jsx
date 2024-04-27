@@ -36,7 +36,7 @@ const Navbar = () => {
           </Link>
           {currentUser ? (
             <>
-              <Link to={`/?author=${currentUser.username}`}>
+              <Link to={`/?username=${currentUser.username}`}>
                 <span className="name">{currentUser.username}</span>
               </Link>
               <span onClick={logout}>Logout</span>

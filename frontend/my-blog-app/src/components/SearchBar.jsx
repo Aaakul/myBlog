@@ -20,13 +20,13 @@ const SearchBar = () => {
       <div className="field">
         <input
           type="radio"
-          checked={field === "username"}
+          checked={field === "author"}
           name="field"
-          value="username"
-          id="username"
+          value="author"
+          id="author"
           onChange={(e) => setField(e.target.value)}
         />
-        <label htmlFor="username">Author</label>
+        <label htmlFor="author">Author</label>
         <input
           type="radio"
           checked={field === "title"}

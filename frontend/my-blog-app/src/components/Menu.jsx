@@ -5,32 +5,13 @@ import axios from "axios";
 import { getText } from "../helpers/getText";
 
 const Menu = ({ cat, id }) => {
-  // const testPosts = [
-  //     {
-  //         id: 0,
-  //         title: 'This is the title of the post1, about 50 characters.',
-  //         desc: 'This is the discription of post 1: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi,laudantium incidunt repellendus aperiam omnis?',
-  //         img: {Logo},
-  //     },
-  //     {
-  //         id: 1,
-  //         title: 'This is the title of the post2, about 50 characters.',
-  //         desc: 'This is the discription of post 2: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi,laudantium incidunt repellendus aperiam omnis?',
-  //         img: {Logo},
-  //     },
-  //     {
-  //         id: 2,
-  //         title: 'This is the title of the post3, about 50 characters.',
-  //         desc: 'This is the discription of post 3: Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi,laudantium incidunt repellendus aperiam omnis?',
-  //         img: {Logo},
-  //     }
-  // ];
+  
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`/posts/?cat=${cat}`);
+        const res = await axios.get(`/posts/?field=cat&keyword=${cat}`);
         setPosts(res.data);
       } catch (error) {
         console.log(error);

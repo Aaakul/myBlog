@@ -7,11 +7,23 @@ export const getPosts = (req, res) => {
   const field = search.field;
   const keyword = search.keyword;
 
-  const q = field
-    ? `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\` FROM users u JOIN posts p ON u.id = p.uid WHERE ${field} LIKE '%${keyword}%';`
-    : "SELECT `title`, `desc`, p.img, p.id, `username` FROM users u JOIN posts p ON u.id = p.uid;";
-  
-    db.query(q, [field], (err, data) => {
+  let q = "";
+  switch (field) {
+    case "title": // Search bar
+      q = `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\`, \`date\` FROM users u JOIN posts p ON u.id = p.uid WHERE title LIKE '%${keyword}%' ORDER BY \`date\` DESC;`;
+      break;
+    case "author":
+      q = `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\`, \`date\` FROM users u JOIN posts p ON u.id = p.uid WHERE username LIKE '%${keyword}%' ORDER BY \`date\` DESC;`;
+      break;
+    case "username": // Accurate search
+      q = `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\`, \`date\` FROM users u JOIN posts p ON u.id = p.uid WHERE username = '${keyword}' ORDER BY \`date\` DESC;`;
+      break;
+    default: // All posts
+      q =
+        "SELECT `title`, `desc`, p.img, p.id, `username` FROM users u JOIN posts p ON u.id = p.uid ORDER BY `date` DESC;";
+  }
+
+  db.query(q, (err, data) => {
     if (err) {
       return res.status(500).json(err);
     }

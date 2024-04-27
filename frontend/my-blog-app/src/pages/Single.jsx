@@ -58,7 +58,7 @@ const Single = () => {
         <div className="info">
           <img src={Logo} alt="User profile" className="profile" />
           <div className="author">
-            <Link to={`/?author=${post.username}`}>
+            <Link to={`/?username=${post.username}`}>
               <h2>{post.username}</h2>
             </Link>
             <i>Posted {moment(post.date).fromNow()}</i>
