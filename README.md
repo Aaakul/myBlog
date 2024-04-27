@@ -8,7 +8,12 @@
 - Simple 404 page
 - HTML rich text display *(with DomPurify)
 - Image compress and upload indicator
+- Search by username and title
 # 
+#### 2024/4/27
+Improved search and order
+#### 2024/4/26
+Added search function, improved data fetch, 404 pages and CSS style
 #### 2024/4/12
 Fix few bugs: Emoji problems, set publish date, cookies expire
 #### 2024/4/9
@@ -26,11 +31,11 @@ Finished the base project following the tutorial. Some bugs were fixed and few f
 - Captcha
 - Private posts
 - Admin system
-- Search
+- ~~Search~~
 - Draft
 
 ##### Improvement: 
-- 404 pages
+- ~~404 pages~~
 - Mobile devices optimizing
 - Clean code
 
