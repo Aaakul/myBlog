@@ -9,7 +9,19 @@
 - HTML rich text display *(with DomPurify)
 - Image compress and upload indicator
 - Search by username and title
+- Ordering by date
 # 
+#### 2024/5/8
+ New feature: ordering by date.
+
+ Bugs fixed:
+- Menu.jsx: empty query may cause error; try to fetch data earlie than Single.jsx;
+- Fixed several posts fetch problems
+
+ Improvements:
+- Improved posts fecth api and functions
+- Adjusted post date display
+- Improved search and order
 #### 2024/4/27
 Improved search and order
 #### 2024/4/26
