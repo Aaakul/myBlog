@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useLayoutEffect, useContext } from "react";
 import Logo from "../img/logo.png";
 import Delete from "../img/delete.png";
 import Edit from "../img/edit.png";
@@ -16,7 +16,7 @@ const Single = () => {
   const postId = location.pathname.split("/")[2];
   const { currentUser } = useContext(AuthContext);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchData = async () => {
       try {
         const res = await axios.get(`/posts/${postId}`);
@@ -61,7 +61,7 @@ const Single = () => {
             <Link to={`/?username=${post.username}`}>
               <h2>{post.username}</h2>
             </Link>
-            <i>Posted {moment(post.date).fromNow()}</i>
+            <i>Posted on {moment(post.date).format("llll")}</i>
           </div>
           {currentUser.username === post.username && (
             <div className="edit">
@@ -78,7 +78,7 @@ const Single = () => {
           className="main-text"
         />
       </div>
-      <Menu cat={post.cat} id={parseInt(postId)} />
+      <Menu cat={post && post.cat} id={parseInt(postId)} />
     </div>
   );
 };

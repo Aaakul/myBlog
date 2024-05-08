@@ -59,9 +59,7 @@ const Navbar = () => {
             Blog
           </Link>
         </div>
-        <div className="search-bar-container">
           <SearchBar />
-        </div>
       </div>
     </div>
   );

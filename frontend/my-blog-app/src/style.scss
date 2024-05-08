@@ -106,15 +106,22 @@ $main-color: lightcyan !important;
           max-width: fit-content;
           font-size: 1rem;
 
-          .search-bar {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+          i {
+            margin: auto;
           }
+
           label {
             cursor: pointer;
             margin: 2px;
           }
+
+          .search-bar,
+          .ordering {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+          }
+
           // Search button
           button {
             cursor: pointer;
@@ -123,6 +130,7 @@ $main-color: lightcyan !important;
             background-color: teal;
             border: 1px solid teal;
             padding: 4px 10px;
+            margin-right: 20px;
           }
         }
       }

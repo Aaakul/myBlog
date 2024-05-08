@@ -3,6 +3,7 @@ import Logo from "../img/logo.png";
 import { Link, useLocation, Navigate } from "react-router-dom";
 import { getText } from "../helpers/getText";
 import getPosts from "../helpers/getPosts";
+import moment from "moment";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -29,7 +30,10 @@ const Home = () => {
   }, [search]);
 
   // Check search word
-  if (field && !["cat", "username", "title", "author"].includes(field)) {
+  if (
+    field &&
+    !["cat", "username", "title", "author", "order"].includes(field)
+  ) {
     return <Navigate to="/NotFound" replace={true} />;
   }
 
@@ -54,6 +58,7 @@ const Home = () => {
                 <Link to={`/?username=${post.username}`}>
                   <span className="author">{`Author: ${post.username}`}</span>
                 </Link>
+                <i>Posted {moment(post.date).fromNow()}</i>
                 <p>{getText(post.desc, 300)}</p>
               </div>
             </div>

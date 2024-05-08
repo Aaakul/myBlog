@@ -1,29 +1,35 @@
 import db from "../db.js";
 import jwt from "jsonwebtoken";
 
+const postData = "`title`, `desc`, p.img, p.id, `username`, `date`, `cat`";
+const usersJoinPosts = "users u JOIN posts p ON u.id = p.uid";
 // Home page
 export const getPosts = (req, res) => {
-  const search = req.query;
-  const field = search.field;
-  const keyword = search.keyword;
+  const { field, keyword, order } = req.query;
+  const dateOrder = order ? "`date` ASC" : "`date` DESC"; // Only selecting order by oldest introduces the param, order by date desc by default
 
   let q = "";
   switch (field) {
     case "title": // Search bar
-      q = `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\`, \`date\` FROM users u JOIN posts p ON u.id = p.uid WHERE title LIKE '%${keyword}%' ORDER BY \`date\` DESC;`;
+      q = `SELECT ${postData} FROM ${usersJoinPosts} WHERE title LIKE ? ORDER BY ${dateOrder};`;
       break;
     case "author":
-      q = `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\`, \`date\` FROM users u JOIN posts p ON u.id = p.uid WHERE username LIKE '%${keyword}%' ORDER BY \`date\` DESC;`;
+      q = `SELECT ${postData} FROM ${usersJoinPosts} WHERE username LIKE ? ORDER BY ${dateOrder};`;
       break;
     case "username": // Accurate search
-      q = `SELECT \`title\`, \`desc\`, p.img, p.id, \`username\`, \`date\` FROM users u JOIN posts p ON u.id = p.uid WHERE username = '${keyword}' ORDER BY \`date\` DESC;`;
+      q = `SELECT ${postData} FROM ${usersJoinPosts} WHERE username = ? ORDER BY${dateOrder};`;
+      break;
+    case "cat":
+      q = `SELECT ${postData} FROM ${usersJoinPosts} WHERE cat = ? ORDER BY ${dateOrder};`;
       break;
     default: // All posts
-      q =
-        "SELECT `title`, `desc`, p.img, p.id, `username` FROM users u JOIN posts p ON u.id = p.uid ORDER BY `date` DESC;";
+      q = `SELECT ${postData} FROM ${usersJoinPosts} ORDER BY ${dateOrder};`;
   }
 
-  db.query(q, (err, data) => {
+  const values =
+    field === "title" || field === "author" ? [`%${keyword}%`] : [keyword];
+
+  db.query(q, values, (err, data) => {
     if (err) {
       return res.status(500).json(err);
     }
@@ -38,9 +44,7 @@ export const getPosts = (req, res) => {
 
 // Single page
 export const getPost = (req, res) => {
-  const q =
-    "SELECT p.id,`username`, `title`, `desc`, p.img, u.img AS profile, `cat`, `date` FROM users u JOIN posts p ON u.id = p.uid WHERE p.id = ?;";
-
+  const q = `SELECT ${postData} AS profile, \`cat\`, \`date\` FROM ${usersJoinPosts} WHERE p.id = ?;`;
   db.query(q, [req.params.id], (err, data) => {
     if (err) {
       return res.status(500).json(err);
